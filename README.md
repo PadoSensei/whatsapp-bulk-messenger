@@ -95,6 +95,10 @@ This script allows you to send bulk messages to a list of phone numbers via What
 
 ---
 
+####
+
+- Hattip to Anirudh @ https://github.com/anirudhbagri/whatsapp-bulk-messenger
+
 ---
 
 # Mensageiro em Massa do WhatsApp
