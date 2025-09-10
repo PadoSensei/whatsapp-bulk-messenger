@@ -15,9 +15,9 @@ from datetime import datetime
 
 # === CONFIGURATION ===
 TEST_MODE = True          # ✅ Set True to simulate, False for real WhatsApp
-BATCH_LIMIT = 3          # Max messages per run
-MIN_DELAY = 10             # Min seconds between messages
-MAX_DELAY = 20             # Max seconds between messages
+BATCH_LIMIT = 3           # Max messages per run
+MIN_DELAY = 10            # Min seconds between messages
+MAX_DELAY = 20            # Max seconds between messages
 LOG_FILE = "log_report.csv"
 
 # Chrome options
@@ -96,6 +96,9 @@ print(style.CYAN + f"Skipping {len(processed)} numbers already processed." + sty
 unprocessed = [n for n in numbers if n not in processed]
 print(style.YELLOW + f"{len(unprocessed)} numbers left to process." + style.RESET)
 
+# Initialize driver (safe default)
+driver = None
+
 # Launch browser if not in test mode
 if not TEST_MODE:
     driver = webdriver.Chrome(
@@ -154,8 +157,12 @@ for idx, number in enumerate(unprocessed[:BATCH_LIMIT]):  # ✅ Batch limit appl
         print(style.RED + f'Failed to send message to {number}: {str(e)}' + style.RESET)
         log_result(number, "FAILURE", str(e))
 
-if not TEST_MODE:
-    driver.close()
+# Safely close driver
+if driver is not None:
+    try:
+        driver.close()
+    except:
+        pass
 
 # === SUMMARY REPORT ===
 processed_after = set()
